@@ -6,10 +6,8 @@
 // client side: decrypt data using AES key
 //
 
-const fs = require("fs")
 const NodeRSA = require("node-rsa")
 const aesjs = require("aes-js")
-var rsaEncKey = require("./rsaEncKey")
 
 const getNewKey = (length=33) => {
   let result = "", seeds
@@ -60,16 +58,10 @@ const rsaDecrypt = (key, text) => {
   return ret.toString()
 }
 
-const createPubKeyString = (pubkeyfile) => {
-  let pubkey = fs.readFileSync(pubkeyfile)
-  return aesEncrypt(rsaEncKey, pubkey)
-}
-
 module.exports = {
   getNewKey,
   aesEncrypt,
   aesDecrypt,
   rsaEncrypt,
   rsaDecrypt,
-  createPubKeyString
 }

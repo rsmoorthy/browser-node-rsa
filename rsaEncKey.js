@@ -1,1 +1,1 @@
-module.exports = "Content-Type: appliation/json"
+module.exports = "Content-type: application/json"

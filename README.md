@@ -36,6 +36,7 @@ bash create_keypair.sh server   # It will create server.pub and server.priv keys
 3.  Edit rsaEncKey.js to set the AES password (that is used to encrypt the RSA pub key)
 4.  Run the following: (the output `bundle.js`) should be part of the browser code (part of `index.html`)
 ```sh
+node createPubKeyEnc.js > pubkeyEncrypted.js
 npx browserify browser.js -p tinyify -o bundle.js --standalone browserEnc
 ```
 5.  Run this command to start the test server:
