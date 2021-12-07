@@ -1,0 +1,37 @@
+{
+  "name": "browser-node-rsa",
+  "version": "1.0.0",
+  "description": "Browser node encryption",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rsmoorthy/browser-node-rsa.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rsmoorthy/browser-node-rsa/issues"
+  },
+  "homepage": "https://github.com/rsmoorthy/browser-node-rsa#readme",
+  "dependencies": {
+    "aes-js": "^3.1.2",
+    "argparse": "^2.0.1",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "node-rsa": "^1.1.1",
+    "ramda": "^0.27.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/node": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "browserify": "^17.0.0",
+    "tinyify": "^3.0.0"
+  }
+}

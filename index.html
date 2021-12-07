@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <script src="./bundle.js"></script>
+    <script type="text/javascript">
+      const getEncKey = async () => {
+        let resp = await fetch("/key", {
+          method: "GET",
+          headers: { 'Content-Type': 'application/json' }
+        })
+        let r = await resp.json()
+        console.log(r.key)
+        return browserEnc.f.decryptKey(r.key)
+      }
+
+      const getEncData = async () => {
+        let resp = await fetch("/data", {
+          method: "GET",
+          headers: { 'Content-Type': 'application/json' }
+        })
+        let r = await resp.json()
+        return r.data
+      }
+
+      window.onload = async function() {
+        let aeskey = await getEncKey()
+        let encdata = await getEncData()
+        console.log("aeskey", aeskey)
+        document.getElementById('aeskey').value = aeskey
+        console.log("encdata", encdata)
+        document.getElementById('encdata').value = encdata
+        let data = browserEnc.f.decrypt(aeskey, encdata)
+        console.log("data", data)
+        document.getElementById('data').value = data
+      }
+    </script>
+  </head>
+  <body>
+    <h3>Testing encryption</h3>
+
+    <div>
+      <p>AES Key</p>
+      <textarea id="aeskey" rows="4" cols="80"></textarea>
+    </div>
+    <div>
+      <p>Encrypted data</p>
+      <textarea id="encdata" rows="4" cols="80"></textarea>
+    </div>
+    <div>
+      <p>Data</p>
+      <textarea id="data" rows="4" cols="80"></textarea>
+    </div>
+  </body>
+</html>
