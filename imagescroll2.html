@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="./bundle.js"></script>
+    <script type="text/javascript">
+      const getEncKey = async () => {
+        let resp = await fetch("/key", {
+          method: "GET",
+          headers: { 'Content-Type': 'application/json' }
+        })
+        let r = await resp.json()
+        console.log(r.key)
+        return browserEnc.f.decryptKey(r.key)
+      }
+
+      const getEncData = async () => {
+        let resp = await fetch("/data", {
+          method: "GET",
+          headers: { 'Content-Type': 'application/json' }
+        })
+        let r = await resp.json()
+        return r.data
+      }
+
+      const sleep = async(ms) => {
+        await new Promise(resolve => setTimeout(resolve, ms))
+      }
+
+      const getCanvas = async(data) => {
+        var canvas = await html2canvas(document.querySelector("#odata"), {
+          onclone: function(clonedoc) {
+            clonedoc.getElementById('idata').insertAdjacentHTML('afterend', data)
+            clonedoc.getElementById("odata").style.display = "block"
+          }
+        })
+        return canvas
+      }
+
+      const crop = (canvas, height, y) => {
+        const nc = document.createElement("canvas")
+        nc.width = canvas.width
+        nc.height = height
+
+        let x = 0
+        nc.getContext("2d").drawImage(canvas, 0, y, nc.width, y + height, 0, 0, nc.width, y + height)
+        return nc
+      }
+
+      const paint = (canvas, height, y) => {
+        let nc = crop(canvas, height, y)
+        document.getElementById("canvas").replaceChildren(nc)
+      }
+
+      window.onload = async function() {
+        let aeskey = await getEncKey()
+        let encdata = await getEncData()
+        let data = browserEnc.f.decrypt(aeskey, encdata)
+        console.log("data", data)
+
+        let canvas = await getCanvas(data)
+        cw = canvas.width
+        ch = canvas.height
+        console.log("canvas width and height", cw, ch)
+        paint(canvas, ch, 0)
+        await sleep(2000)
+        for(let h=0; h < ch; h+=20) {
+          paint(canvas, 100, h)
+          await sleep(1000)
+        }
+        await paint(canvas, ch, 0)
+      }
+    </script>
+  </head>
+  <body>
+    <h3>Showing HTML as an image and in parts</h3>
+
+    <div id="odata" style="display: none">
+      <div id="idata">
+      </div>
+    </div>
+    <div>
+      <p>Showing the full image first, then showing 100 px height, then simulating a scrolling slowly and then finally shows the image</p>
+    </div>
+    <div id="canvas" style="border: 1px solid red">
+    </div>
+  </body>
+</html>

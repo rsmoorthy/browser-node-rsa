@@ -29,12 +29,17 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'))
 })
 
+app.get('/imagescroll.html', function(req, res) {
+  res.sendFile(path.join(__dirname, 'imagescroll.html'))
+})
+
 app.get('/key', function(req, res) {
   return res.json({ status: 'ok', key: aeskeyEnc})
 })
 
 app.get('/data', function(req, res) {
-  return res.json({ status: 'ok', data: enc.aesEncrypt(aeskey, 'hello')})
+  let data = fs.readFileSync("./data.html")
+  return res.json({ status: 'ok', data: enc.aesEncrypt(aeskey, data)})
 })
 
 // catch 404 and forward to error handler
